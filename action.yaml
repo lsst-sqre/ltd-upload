@@ -1,0 +1,31 @@
+name: "Upload to LTD"
+description: >
+  Upload a website to LSST the Docs.
+inputs:
+  project:
+    description: "LTD documentation project"
+    required: true
+  dir:
+    description: "Root directory path of built documentation"
+    required: true
+  username:
+    description: "Username for the LTD service"
+    required: true
+  password:
+    description: "Password for the LTD service"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install LTD
+      shell: bash
+      run: |
+        python -m pip install ltd-conveyor
+
+    - name: Upload to LTD
+      shell: bash
+      env:
+        LTD_PASSWORD: ${{ inputs.password }}
+        LTD_USERNAME: ${{ inputs.username }}
+      run:  ltd upload --product {{ inputs.project }} --gh --dir {{ inputs.dir}}
