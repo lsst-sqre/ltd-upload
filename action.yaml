@@ -28,4 +28,4 @@ runs:
       env:
         LTD_PASSWORD: ${{ inputs.password }}
         LTD_USERNAME: ${{ inputs.username }}
-      run:  ltd upload --product {{ inputs.project }} --gh --dir {{ inputs.dir}}
+      run:  ltd upload --product ${{ inputs.project }} --gh --dir ${{ inputs.dir}}
