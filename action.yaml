@@ -18,14 +18,20 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Install LTD
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
       shell: bash
       run: |
-        python -m pip install ltd-conveyor
+        python -m pip install --upgrade pip
+        python -m pip install --upgrade pipx
 
     - name: Upload to LTD
       shell: bash
       env:
         LTD_PASSWORD: ${{ inputs.password }}
         LTD_USERNAME: ${{ inputs.username }}
-      run:  ltd upload --product ${{ inputs.project }} --gh --dir ${{ inputs.dir}}
+      run:  pipx run --spec 'ltd-conveyor<0.9' -- ltd upload --product ${{ inputs.project }} --gh --dir ${{ inputs.dir}}
